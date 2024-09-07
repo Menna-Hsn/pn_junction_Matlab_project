@@ -1,0 +1,146 @@
+   q_c=1.6*10^-19;
+           epsilon_si=11.8*8.854*10^-14;
+           T_k=300;
+           K=1.38*10^-23;
+           ni=1.5*10^10;
+           x=linspace(-0.0001,0.0001,10000);
+
+            ND=app.NDEditField_2.Value;
+            NA=app.NAEditField_2.Value;
+             if(ND<=10^14&&NA<=10^6)
+                 app.EditField.Value='ERROR (in ND & NA values)';
+                app.Lamp.Color='r'
+                 app.vbiEditField.Value=0;
+                app.wEditField.Value=0;
+                app.xpoEditField.Value=0;
+                app.xnoEditField.Value=0;
+                app.npoEditField.Value=0;
+                app.pnoEditField.Value=0;
+                app.E_maxEditField.Value=0;
+                 cla(app.fig);
+                cla(app.fig_4);
+                cla(app.fig_3);
+                cla(app.fig_2);
+
+        elseif(ND<=10^14)
+                app.EditField.Value='ERROR (in ND value)';
+                app.Lamp.Color='r'
+                app.vbiEditField.Value=0;
+                app.wEditField.Value=0;
+                app.xpoEditField.Value=0;
+                app.xnoEditField.Value=0;
+                app.npoEditField.Value=0;
+                app.pnoEditField.Value=0;
+                app.E_maxEditField.Value=0;
+                cla(app.fig);
+                cla(app.fig_4);
+                cla(app.fig_3);
+                cla(app.fig_2);
+
+
+                
+            elseif(NA<=10^6)
+                 app.EditField.Value='ERROR (in NA value)';
+                app.Lamp.Color='r'
+                 app.vbiEditField.Value=0;
+                app.wEditField.Value=0;
+                app.xpoEditField.Value=0;
+                app.xnoEditField.Value=0;
+                app.npoEditField.Value=0;
+                app.pnoEditField.Value=0;
+                app.E_maxEditField.Value=0;
+                 cla(app.fig);
+                cla(app.fig_4);
+                cla(app.fig_3);
+                cla(app.fig_2);
+
+
+           
+
+            else
+                 app.EditField.Value='';
+                app.Lamp.Color='w'
+            %% built_in potential
+        vbi=(K*T_k/q_c)*log(NA*ND/(ni^2)) ;
+       app.vbiEditField.Value=vbi;
+
+       %% width 
+    w=sqrt((2*epsilon_si/q_c)*vbi*((NA+ND)/(NA*ND)));
+    xpo=(ND*w)/(ND+NA);
+    xno=w-xpo;
+
+      app.wEditField.Value=w;
+      app.xpoEditField.Value=xpo;
+      app.xnoEditField.Value=xno;
+
+%% imp_eq.;
+    npo=ND*exp((-q_c*vbi)/(K*T_k));
+    pno=NA*exp((-q_c*vbi)/(K*T_k));
+     app.npoEditField.Value=npo;
+     app.pnoEditField.Value=pno;
+
+
+
+        %% electric_field
+        E_max=q_c*ND*xno/epsilon_si;
+        app.E_maxEditField.Value=E_max;
+
+            %% concentration n&p @thermal equ.
+
+x_1=[-xpo -(xpo+10^-4)];
+x_2=[(xno+10^-4)  xno];
+
+plot(app.fig,x_2,[ND ND],'--k');
+hold (app.fig, "on")
+ grid( app.fig,"on")
+plot(app.fig,x_1,[NA NA],'-- r');
+plot(app.fig,x_1,[npo npo],'-- k');
+plot(app.fig,x_2,[pno pno],'--r');
+
+  x_3=[xno -xpo];
+  y_1=[ND npo];
+  y_2=[pno NA];
+
+  plot(app.fig,x_3,y_1,'m:');
+  plot(app.fig,x_3,y_2,'m:');
+
+
+ %% v
+ 
+ hold(app.fig_2,"on") 
+ grid( app.fig_2,"on")
+x1_v=[xno+10^-4 xno];
+x2_v=[-xpo -(xpo+10^-4)];
+x3_v=[xno -xpo];
+
+plot(app.fig_2,x1_v,[vbi vbi],'r-')
+plot(app.fig_2,x2_v,[0 0],'r-')
+plot(app.fig_2,x3_v,[vbi 0],'r-')
+
+%% electric field
+ hold(app.fig_3,"on") 
+ grid( app.fig_3,"on")
+ E_max=q_c*ND*xno/epsilon_si
+ x1=[xno 0 -xpo];
+ y1=[0 -E_max 0];
+ plot(app.fig_3,x1,y1)
+ 
+
+%% Row
+ hold(app.fig_4,"on") 
+ grid( app.fig_4,"on")
+xr1=[xno 0];
+xr2=[0 -xpo];
+yr1= [0 ND];
+yr2=[-NA 0];
+plot(app.fig_4,xr1,[ND ND],'-b');
+
+plot(app.fig_4,xr2,[-NA -NA],'r');
+plot(app.fig_4,[0 0],yr1,'b');
+plot(app.fig_4,[xno xno],yr1,'b');
+plot(app.fig_4,[0 0],yr2,'r');
+plot(app.fig_4,[-xpo -xpo],yr2,'r');
+plot(app.fig_4,[12*10^-4 -12*10^-4],[0 0],'k-');
+
+
+            end
