@@ -1,0 +1,1 @@
+In this MATLAB project, a model for a silicon Pn junction uniformly doped, the motion of electrons and holes, and the neutral region, and three animations for the energy band in its three cases: thermal equilibrium, forward bias and reverse bias, and calculation for built-in potential, electric field_max, depletion width, xno, xpo, npo, and pno.
